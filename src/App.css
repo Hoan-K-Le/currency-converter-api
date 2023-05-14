@@ -8,6 +8,15 @@ nav > h1 {
 }
 .layout {
   background: rgba(62, 79, 238, 0.274);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.reverse-logo {
+  height: 24px;
+  width: 24px;
 }
 
 .form-control {
@@ -28,4 +37,33 @@ nav > h1 {
 
 .currency-input {
   max-width: 100px;
+}
+
+.all-currency {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  background: rgba(15, 36, 221, 0.274);
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+
+ul {
+  /* max-width: 750px;
+  flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 10px; */
+}
+
+li {
+  color: whitesmoke;
+  font-weight: bold;
+  /* display: flex; */
+  list-style: none;
+  /* align-items: center; */
+  padding: 10px;
+  box-shadow: 2px 2px 10px 2px rgba(0, 0, 0, 0.3);
 }

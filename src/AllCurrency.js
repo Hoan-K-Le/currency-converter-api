@@ -3,44 +3,50 @@ import React, { useState, useEffect } from 'react'
 function AllCurrency() {
   const [currencies, setCurrencies] = useState([])
   const [base, setBase] = useState('USD')
+
   useEffect(() => {
-    getRate('USD')
-  }, [])
+    const fetchCurrencies = async base => {
+      try {
+        const response = await fetch(
+          `https://api.frankfurter.app/latest?from=${base}`
+        )
+        const data = await response.json()
+        const currenciesData = Object.keys(data.rates).map(acc => ({
+          rate: data.rates[acc],
+          name: acc,
+        }))
 
-  const getRate = base => {
-    let rateTemp = []
-    fetch(`https://api.frankfurter.app/latest?from=${base}`)
-      .then(res => res.json())
-      .then(data => {
-        for (const [symbol, rate] of Object.entries(data.rates)) {
-          rateTemp.push({ symbol, rate })
-        }
-        setCurrencies(rateTemp)
-      })
-  }
+        setCurrencies(currenciesData)
+      } catch (error) {
+        console.log(error)
+      }
+    }
 
-  // getting the target base value whenever we change the base currency
+    fetchCurrencies(base)
+  }, [base])
+
   const handleBaseChange = e => {
-    e.preventDefault()
     setBase(e.target.value)
-    getRate(e.target.value)
   }
-
   return (
     <React.Fragment>
       <div className="all-currency">
         <select value={base} onChange={handleBaseChange}>
+          <option value="">Select Base Currency</option>
+          {!!base && <option value={base}>{base}</option>}
           {currencies.length > 0 &&
-            currencies.map(currency => (
-              <option value={currency.symbol} key={currency.symbol}>
-                {currency.symbol}
+            currencies.map(curr => (
+              <option value={curr.name} key={curr.name}>
+                {curr.name}
               </option>
             ))}
         </select>
-        <ul>
+        <ul className="row m-4">
           {currencies.map(currency => (
-            <li>
-              {currency.symbol} - {currency.rate}
+            <li className="col-4" key={currency.name}>
+              <span className="col-md-4">{currency.name}</span>{' '}
+              <span className="h3 col-4">-</span>{' '}
+              <span className="col-4">{currency.rate}</span>
             </li>
           ))}
         </ul>
